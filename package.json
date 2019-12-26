@@ -7,14 +7,13 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "lint": "eslint . --init"
+        "lint": "eslint . --init",
+        "start:backend": "yarn workspace @url-shortener/backend start",
+        "start:frontend": "yarn workspace @url-shortener/frontend start",
+        "start": "concurrently --kill-others \"yarn start:backend\" \"yarn start:frontend\""
     },
-    "dependencies": {},
     "devDependencies": {
-        "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.8.0",
-        "eslint-plugin-prettier": "^3.1.2",
-        "prettier": "^1.19.1"
+        "concurrently": "^5.0.2"
     },
     "workspaces": [
         "packages/*"
