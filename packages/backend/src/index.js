@@ -12,11 +12,15 @@ mongoose.connect('mongodb://localhost:27017/url-shortener', {
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
-mongoose.connection.once('open', () => console.log('mongodb connected!'));
-
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-app.use('/api', (req, res) => require('./routes'));
 
-app.listen(3001);
+mongoose.connection.once('open', () => {
+	require('./model');
+
+	app.use('/api', require('./routes'));
+
+	app.listen(3001, () => console.log('server initialized!'));
+
+	console.log('database connected!');
+});
