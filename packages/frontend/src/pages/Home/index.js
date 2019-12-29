@@ -69,6 +69,9 @@ export default function Home() {
 								onChange={e =>
 									setOriginalURL(e.target.value.trim())
 								}
+								onKeyUp={e => {
+									if (e.which === 13) handleSubmit();
+								}}
 							/>
 						</StyledBody>
 
@@ -124,6 +127,7 @@ export default function Home() {
 							>
 								<Button>Copy URL</Button>
 							</CopyToClipboard>
+
 							<StyledLink
 								style={{ marginLeft: '10px' }}
 								href={serverOriginalURL}
