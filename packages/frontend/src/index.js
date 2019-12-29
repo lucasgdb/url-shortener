@@ -2,9 +2,10 @@ import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Spinner } from 'baseui/spinner';
+import '~/styles.css';
 
 const Home = lazy(() => import('~/pages/Home'));
-const WrongPage = lazy(() => import('~/pages/404'));
+const VisitURL = lazy(() => import('~/pages/VisitURL'));
 
 ReactDOM.render(
 	<Suspense
@@ -27,8 +28,8 @@ ReactDOM.render(
 					<Home />
 				</Route>
 
-				<Route path="*">
-					<WrongPage />
+				<Route path="/:shortenedURL">
+					<VisitURL />
 				</Route>
 			</Switch>
 		</BrowserRouter>

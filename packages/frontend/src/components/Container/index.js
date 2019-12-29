@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from 'baseui';
 
 const Container = styled('div', {
-	width: '100%',
+	width: '90%',
 	paddingRight: '15px',
 	paddingLeft: '15px',
 	marginRight: 'auto',

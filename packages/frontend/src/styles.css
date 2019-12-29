@@ -1,0 +1,12 @@
+body {
+	background: #eeeeee;
+	transition: background 0.1s;
+	min-width: 320px;
+	overflow-x: hidden
+}
+
+.divider {
+	height: 1px;
+	overflow: hidden;
+	background-color: #e0e0e0
+}
