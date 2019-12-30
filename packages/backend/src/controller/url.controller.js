@@ -15,7 +15,7 @@ module.exports = {
 		const URL = await url.findOne({ shortenedURL });
 
 		if (URL) return res.status(200).json(URL);
-		else return res.status(400).json({});
+		else return res.status(200).json({ error: true });
 	},
 
 	async createURL(req, res) {

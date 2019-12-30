@@ -10,7 +10,8 @@ export default function VisitURL() {
 		(async function() {
 			const { data } = await api.get(`/url/${shortenedURL}`);
 
-			document.location = data.originalURL;
+			if (!data.error) document.location = data.originalURL;
+			else document.location = '/';
 		})();
 	}, [shortenedURL]);
 
