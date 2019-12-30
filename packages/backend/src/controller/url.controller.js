@@ -1,6 +1,6 @@
 const url = require('mongoose').model('url');
 const qrcode = require('qrcode');
-const validURL = require('valid-url');
+const { isUri } = require('valid-url');
 
 module.exports = {
 	async getURLs(req, res) {
@@ -21,7 +21,7 @@ module.exports = {
 	async createURL(req, res) {
 		const { originalURL } = req.body;
 
-		if (validURL.isUri(originalURL)) {
+		if (isUri(originalURL)) {
 			const exist = await url.findOne({ originalURL });
 
 			if (exist) {
