@@ -17,6 +17,7 @@ import { FormControl } from 'baseui/form-control';
 import { Alert } from 'baseui/icon';
 import { useStyletron } from 'baseui';
 import { StatefulPopover, PLACEMENT } from 'baseui/popover';
+import { StatefulTooltip } from 'baseui/tooltip';
 import {
 	Modal,
 	ModalHeader,
@@ -25,6 +26,12 @@ import {
 	ModalButton,
 	ROLE,
 } from 'baseui/modal';
+import {
+	HeaderNavigation,
+	ALIGN,
+	StyledNavigationList,
+	StyledNavigationItem,
+} from 'baseui/header-navigation';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
@@ -158,8 +165,59 @@ export default function Home({ darkTheme }) {
 	return (
 		<Provider value={engine}>
 			<BaseProvider theme={isDarkTheme ? DarkTheme : LightTheme}>
+				<HeaderNavigation style={{ paddingRight: '10px' }}>
+					<StyledNavigationList $align={ALIGN.left}>
+						<StyledNavigationItem
+							style={{
+								color: isDarkTheme ? '#fff' : '#000',
+							}}
+						>
+							URL Shortener
+						</StyledNavigationItem>
+					</StyledNavigationList>
+
+					<StyledNavigationList $align={ALIGN.center} />
+
+					<StyledNavigationList $align={ALIGN.right}>
+						<StyledNavigationItem>
+							<StatefulTooltip
+								accessibilityType="tooltip"
+								content="Click here to sign in"
+								placement={PLACEMENT.bottom}
+							>
+								<Button
+									onClick={() => setLoginModalIsOpen(true)}
+								>
+									Sign in
+								</Button>
+							</StatefulTooltip>
+
+							<StatefulTooltip
+								accessibilityType="tooltip"
+								content={`Switch current theme to ${
+									!isDarkTheme ? 'Dark' : 'Light'
+								} Theme`}
+								placement={PLACEMENT.bottom}
+							>
+								<Button
+									style={{ marginLeft: '10px' }}
+									onClick={() => {
+										localStorage.setItem(
+											'darkTheme',
+											!isDarkTheme
+										);
+										setIsDarkTheme(!isDarkTheme);
+									}}
+								>
+									Switch Theme
+								</Button>
+							</StatefulTooltip>
+						</StyledNavigationItem>
+					</StyledNavigationList>
+				</HeaderNavigation>
+
 				<Container>
-					<Card>
+					<Card style={{ marginTop: '15px' }}>
 						<StyledBody>
 							<HeadingLevel>
 								<Heading styleLevel={4}>URL Shortener</Heading>
@@ -178,38 +236,19 @@ export default function Home({ darkTheme }) {
 						</StyledBody>
 
 						<StyledAction>
-							<Button
-								title="Short the pasted URL"
-								onClick={handleSubmit}
-								isLoading={fetching}
-								disabled={fetching}
+							<StatefulTooltip
+								accessibilityType="tooltip"
+								content="Short the pasted URL"
+								placement={PLACEMENT.bottom}
 							>
-								Short URL
-							</Button>
-
-							<div style={{ float: 'right' }}>
 								<Button
-									title="Click here to sign in"
-									onClick={() => setLoginModalIsOpen(true)}
-									kind={KIND.secondary}
+									onClick={handleSubmit}
+									isLoading={fetching}
+									disabled={fetching}
 								>
-									Sign in
+									Short URL
 								</Button>
-
-								<Button
-									style={{ marginLeft: '10px' }}
-									onClick={() => {
-										localStorage.setItem(
-											'darkTheme',
-											!isDarkTheme
-										);
-										setIsDarkTheme(!isDarkTheme);
-									}}
-									kind={KIND.secondary}
-								>
-									Switch Theme
-								</Button>
-							</div>
+							</StatefulTooltip>
 						</StyledAction>
 					</Card>
 
@@ -278,7 +317,13 @@ export default function Home({ darkTheme }) {
 									marginBottom: '-10px',
 								}}
 							>
-								<img src={img} alt="QRCode" title="QRCode" />
+								<StatefulTooltip
+									accessibilityType="tooltip"
+									content="QRCode"
+									placement={PLACEMENT.bottom}
+								>
+									<img src={img} alt="QRCode" />
+								</StatefulTooltip>
 							</div>
 						</Card>
 					)}
