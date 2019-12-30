@@ -7,6 +7,8 @@ import '~/styles.css';
 const Home = lazy(() => import('~/pages/Home'));
 const VisitURL = lazy(() => import('~/pages/VisitURL'));
 
+const darkTheme = JSON.parse(localStorage.getItem('darkTheme'));
+
 ReactDOM.render(
 	<Suspense
 		fallback={
@@ -25,7 +27,7 @@ ReactDOM.render(
 		<BrowserRouter>
 			<Switch>
 				<Route path="/" exact>
-					<Home />
+					<Home darkTheme={darkTheme} />
 				</Route>
 
 				<Route path="/:shortenedURL">

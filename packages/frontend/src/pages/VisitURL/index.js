@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router';
 import api from '~/services/api';
+
+import { useParams } from 'react-router';
 
 export default function VisitURL() {
 	const { shortenedURL } = useParams();
@@ -11,7 +12,7 @@ export default function VisitURL() {
 
 			document.location = data.originalURL;
 		})();
-	}, []);
+	}, [shortenedURL]);
 
 	return <></>;
 }
