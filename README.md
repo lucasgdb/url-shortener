@@ -7,4 +7,5 @@
 
 ## Image
 
-![](images/url-shortener.png)
+![](images/url-shortener-light.png)
+![](images/url-shortener-dark.png)
