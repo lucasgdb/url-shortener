@@ -11,3 +11,13 @@ body {
 	overflow: hidden;
 	background-color: #e0e0e0;
 }
+
+#root > div:first-child {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+.content {
+	flex: 1 0 auto;
+}

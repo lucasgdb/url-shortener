@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { isUri } from 'valid-url';
 import { validate } from 'email-validator';
 import API from '~/services/api';
+
 import Container from '~/components/Container';
+import Header from '~/components/Header';
+import Footer from '~/components/Footer';
 
 import { Client } from 'styletron-engine-atomic';
 import { Provider } from 'styletron-react';
 import { LightTheme, BaseProvider, DarkTheme } from 'baseui';
 import { Input } from 'baseui/input';
-import { Button, KIND } from 'baseui/button';
+import { Button } from 'baseui/button';
 import { StyledLink } from 'baseui/link';
 import { Card, StyledBody, StyledAction } from 'baseui/card';
 import { Heading, HeadingLevel } from 'baseui/heading';
@@ -26,12 +29,6 @@ import {
 	ModalButton,
 	ROLE,
 } from 'baseui/modal';
-import {
-	HeaderNavigation,
-	ALIGN,
-	StyledNavigationList,
-	StyledNavigationItem,
-} from 'baseui/header-navigation';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
@@ -165,200 +162,254 @@ export default function Home({ darkTheme }) {
 	return (
 		<Provider value={engine}>
 			<BaseProvider theme={isDarkTheme ? DarkTheme : LightTheme}>
-				<HeaderNavigation style={{ paddingRight: '10px' }}>
-					<StyledNavigationList $align={ALIGN.left}>
-						<StyledNavigationItem
-							style={{
-								color: isDarkTheme ? '#fff' : '#000',
-							}}
-						>
-							URL Shortener
-						</StyledNavigationItem>
-					</StyledNavigationList>
+				<div className="content">
+					<Header
+						isDarkTheme={isDarkTheme}
+						setIsDarkTheme={setIsDarkTheme}
+						setLoginModalIsOpen={setLoginModalIsOpen}
+					/>
 
-					<StyledNavigationList $align={ALIGN.center} />
+					<Container>
+						<Card style={{ margin: '15px 0' }}>
+							<StyledBody>
+								<HeadingLevel>
+									<Heading styleLevel={4}>
+										URL Shortener
+									</Heading>
+								</HeadingLevel>
 
-					<StyledNavigationList $align={ALIGN.right}>
-						<StyledNavigationItem>
-							<StatefulTooltip
-								accessibilityType="tooltip"
-								content="Click here to sign in"
-								placement={PLACEMENT.bottom}
-							>
-								<Button
-									onClick={() => setLoginModalIsOpen(true)}
-								>
-									Sign in
-								</Button>
-							</StatefulTooltip>
-
-							<StatefulTooltip
-								accessibilityType="tooltip"
-								content={`Switch current theme to ${
-									!isDarkTheme ? 'Dark' : 'Light'
-								} Theme`}
-								placement={PLACEMENT.bottom}
-							>
-								<Button
-									style={{ marginLeft: '10px' }}
-									onClick={() => {
-										localStorage.setItem(
-											'darkTheme',
-											!isDarkTheme
-										);
-										setIsDarkTheme(!isDarkTheme);
-									}}
-								>
-									Switch Theme
-								</Button>
-							</StatefulTooltip>
-						</StyledNavigationItem>
-					</StyledNavigationList>
-				</HeaderNavigation>
-
-				<Container>
-					<Card style={{ marginTop: '15px' }}>
-						<StyledBody>
-							<HeadingLevel>
-								<Heading styleLevel={4}>URL Shortener</Heading>
-							</HeadingLevel>
-
-							<Input
-								placeholder="Paste here the URL to be shortened."
-								value={originalURL}
-								onChange={e =>
-									setOriginalURL(e.target.value.trim())
-								}
-								onKeyUp={e => {
-									if (e.which === 13) handleSubmit();
-								}}
-							/>
-						</StyledBody>
-
-						<StyledAction>
-							<StatefulTooltip
-								accessibilityType="tooltip"
-								content="Short the pasted URL"
-								placement={PLACEMENT.bottom}
-							>
-								<Button
-									onClick={handleSubmit}
-									isLoading={fetching}
-									disabled={fetching}
-								>
-									Short URL
-								</Button>
-							</StatefulTooltip>
-						</StyledAction>
-					</Card>
-
-					{isShortened && (
-						<Card style={{ overflow: 'hidden' }}>
-							<HeadingLevel>
-								<Heading styleLevel={4}>Shortened URL</Heading>
-
-								<Paragraph3>
-									Long URL:{' '}
-									<StyledLink
-										href={serverOriginalURL}
-										target="_blank"
-									>
-										{serverOriginalURL}
-									</StyledLink>
-								</Paragraph3>
-
-								<Paragraph3>
-									Shortened URL:{' '}
-									<StyledLink
-										href={`http://127.0.0.1:3000/${shortenedURL}`}
-										target="_blank"
-									>
-										http://127.0.0.1:3000/{shortenedURL}
-									</StyledLink>
-								</Paragraph3>
-							</HeadingLevel>
-
-							<CopyToClipboard
-								text={`http://127.0.0.1:3000/${shortenedURL}`}
-							>
-								<StatefulPopover
-									placement={PLACEMENT.bottom}
-									content={
-										<Paragraph3 padding="scale500">
-											Successfully copied!{' '}
-											<span role="img" aria-label="Hands">
-												👋
-											</span>
-										</Paragraph3>
+								<Input
+									placeholder="Paste here the URL to be shortened."
+									value={originalURL}
+									onChange={e =>
+										setOriginalURL(e.target.value.trim())
 									}
-									accessibilityType="tooltip"
-									showArrow
-								>
-									<Button>Copy URL</Button>
-								</StatefulPopover>
-							</CopyToClipboard>
+									onKeyUp={e => {
+										if (e.which === 13) handleSubmit();
+									}}
+								/>
+							</StyledBody>
 
-							<StyledLink
-								style={{ marginLeft: '10px' }}
-								href={serverOriginalURL}
-								target="_blank"
-							>
-								Visit URL
-							</StyledLink>
-
-							<div
-								style={{ margin: '10px 0' }}
-								className="divider"
-							></div>
-
-							<div
-								style={{
-									textAlign: 'center',
-									marginBottom: '-10px',
-								}}
-							>
+							<StyledAction>
 								<StatefulTooltip
 									accessibilityType="tooltip"
-									content="QRCode"
+									content="Short the pasted URL"
 									placement={PLACEMENT.bottom}
 								>
-									<img src={img} alt="QRCode" />
+									<Button
+										onClick={handleSubmit}
+										isLoading={fetching}
+										disabled={fetching}
+									>
+										Short URL
+									</Button>
 								</StatefulTooltip>
-							</div>
+							</StyledAction>
 						</Card>
-					)}
-				</Container>
 
-				<Modal
-					unstable_ModalBackdropScroll
-					onClose={() => setLoginModalIsOpen(false)}
-					isOpen={loginModalIsOpen}
-					animate
-					autoFocus
-					role={ROLE.alertdialog}
-				>
-					<ModalHeader>Sign in</ModalHeader>
+						{isShortened && (
+							<Card
+								style={{
+									marginBottom: '15px',
+									overflow: 'hidden',
+								}}
+							>
+								<HeadingLevel>
+									<Heading styleLevel={4}>
+										Shortened URL
+									</Heading>
 
-					<form onSubmit={e => handleUserLogin(e)} method="POST">
+									<Paragraph3>
+										Long URL:{' '}
+										<StyledLink
+											href={serverOriginalURL}
+											target="_blank"
+										>
+											{serverOriginalURL}
+										</StyledLink>
+									</Paragraph3>
+
+									<Paragraph3>
+										Shortened URL:{' '}
+										<StyledLink
+											href={`http://127.0.0.1:3000/${shortenedURL}`}
+											target="_blank"
+										>
+											http://127.0.0.1:3000/{shortenedURL}
+										</StyledLink>
+									</Paragraph3>
+								</HeadingLevel>
+
+								<CopyToClipboard
+									text={`http://127.0.0.1:3000/${shortenedURL}`}
+								>
+									<StatefulPopover
+										placement={PLACEMENT.bottom}
+										content={
+											<Paragraph3 padding="scale500">
+												Successfully copied!{' '}
+												<span
+													role="img"
+													aria-label="Hands"
+												>
+													👋
+												</span>
+											</Paragraph3>
+										}
+										accessibilityType="tooltip"
+										showArrow
+									>
+										<Button>Copy URL</Button>
+									</StatefulPopover>
+								</CopyToClipboard>
+
+								<StyledLink
+									style={{ marginLeft: '10px' }}
+									href={serverOriginalURL}
+									target="_blank"
+								>
+									Visit URL
+								</StyledLink>
+
+								<div
+									style={{ margin: '10px 0' }}
+									className="divider"
+								></div>
+
+								<div
+									style={{
+										textAlign: 'center',
+										marginBottom: '-10px',
+									}}
+								>
+									<StatefulTooltip
+										accessibilityType="tooltip"
+										content="QRCode"
+										placement={PLACEMENT.bottom}
+									>
+										<img src={img} alt="QRCode" />
+									</StatefulTooltip>
+								</div>
+							</Card>
+						)}
+					</Container>
+
+					<Modal
+						unstable_ModalBackdropScroll
+						onClose={() => setLoginModalIsOpen(false)}
+						isOpen={loginModalIsOpen}
+						animate
+						autoFocus
+						role={ROLE.alertdialog}
+					>
+						<ModalHeader>Sign in</ModalHeader>
+
+						<form onSubmit={e => handleUserLogin(e)} method="POST">
+							<ModalBody>
+								<FormControl
+									label="Your email"
+									error={
+										shouldShowError
+											? 'Please input a valid email address'
+											: null
+									}
+								>
+									<Input
+										value={userLoginEmail}
+										onChange={e => onChange(e.target.value)}
+										onKeyUp={e => {
+											if (e.which === 13)
+												handleUserLogin();
+										}}
+										onBlur={() => setIsVisited(true)}
+										error={shouldShowError}
+										overrides={
+											shouldShowError
+												? { After: Negative }
+												: {}
+										}
+										type="email"
+										required
+									/>
+								</FormControl>
+
+								<FormControl label="Your password">
+									<Input
+										value={userLoginPassword}
+										onChange={e =>
+											setUserLoginPassword(e.target.value)
+										}
+										onKeyUp={e => {
+											if (e.which === 13)
+												handleUserLogin();
+										}}
+										type="password"
+										required
+									/>
+								</FormControl>
+
+								<StyledLink
+									href="#"
+									onClick={() => {
+										setLoginModalIsOpen(false);
+										setRegisterModalIsOpen(true);
+									}}
+								>
+									Don't you have an account? Sign up here!
+								</StyledLink>
+							</ModalBody>
+
+							<ModalFooter
+								style={{
+									color: '#d44333',
+									display: 'flex',
+									justifyContent: 'space-between',
+								}}
+							>
+								<p>{response}</p>
+								<ModalButton
+									type="submit"
+									isLoading={loginFetching}
+									disabled={loginFetching}
+								>
+									Sign in
+								</ModalButton>
+							</ModalFooter>
+						</form>
+					</Modal>
+
+					<Modal
+						unstable_ModalBackdropScroll
+						onClose={() => setRegisterModalIsOpen(false)}
+						isOpen={registerModalIsOpen}
+						animate
+						autoFocus
+						role={ROLE.alertdialog}
+					>
+						<ModalHeader>Sign up</ModalHeader>
+
 						<ModalBody>
 							<FormControl
 								label="Your email"
 								error={
-									shouldShowError
+									shouldRegisterShowError
 										? 'Please input a valid email address'
 										: null
 								}
 							>
 								<Input
-									value={userLoginEmail}
-									onChange={e => onChange(e.target.value)}
+									value={userRegisterEmail}
+									onChange={e =>
+										onRegisterChange(e.target.value)
+									}
 									onKeyUp={e => {
-										if (e.which === 13) handleUserLogin();
+										if (e.which === 13)
+											handleUserRegister();
 									}}
-									onBlur={() => setIsVisited(true)}
-									error={shouldShowError}
+									onBlur={() => setIsRegisterVisited(true)}
+									error={shouldRegisterShowError}
 									overrides={
-										shouldShowError
+										shouldRegisterShowError
 											? { After: Negative }
 											: {}
 									}
@@ -369,12 +420,13 @@ export default function Home({ darkTheme }) {
 
 							<FormControl label="Your password">
 								<Input
-									value={userLoginPassword}
+									value={userRegisterPassword}
 									onChange={e =>
-										setUserLoginPassword(e.target.value)
+										setUserRegisterPassword(e.target.value)
 									}
 									onKeyUp={e => {
-										if (e.which === 13) handleUserLogin();
+										if (e.which === 13)
+											handleUserRegister();
 									}}
 									type="password"
 									required
@@ -384,11 +436,11 @@ export default function Home({ darkTheme }) {
 							<StyledLink
 								href="#"
 								onClick={() => {
-									setLoginModalIsOpen(false);
-									setRegisterModalIsOpen(true);
+									setRegisterModalIsOpen(false);
+									setLoginModalIsOpen(true);
 								}}
 							>
-								Don't you have an account? Sign up here!
+								Already have an account? Sign in here!
 							</StyledLink>
 						</ModalBody>
 
@@ -399,143 +451,67 @@ export default function Home({ darkTheme }) {
 								justifyContent: 'space-between',
 							}}
 						>
-							<p>{response}</p>
+							<p>{registerResponse}</p>
 							<ModalButton
-								type="submit"
-								isLoading={loginFetching}
-								disabled={loginFetching}
+								onClick={handleUserRegister}
+								isLoading={registerFetching}
+								disabled={registerFetching}
 							>
-								Sign in
+								Sign up
 							</ModalButton>
 						</ModalFooter>
-					</form>
-				</Modal>
+					</Modal>
 
-				<Modal
-					unstable_ModalBackdropScroll
-					onClose={() => setRegisterModalIsOpen(false)}
-					isOpen={registerModalIsOpen}
-					animate
-					autoFocus
-					role={ROLE.alertdialog}
-				>
-					<ModalHeader>Sign up</ModalHeader>
-
-					<ModalBody>
-						<FormControl
-							label="Your email"
-							error={
-								shouldRegisterShowError
-									? 'Please input a valid email address'
-									: null
-							}
-						>
-							<Input
-								value={userRegisterEmail}
-								onChange={e => onRegisterChange(e.target.value)}
-								onKeyUp={e => {
-									if (e.which === 13) handleUserRegister();
-								}}
-								onBlur={() => setIsRegisterVisited(true)}
-								error={shouldRegisterShowError}
-								overrides={
-									shouldRegisterShowError
-										? { After: Negative }
-										: {}
-								}
-								type="email"
-								required
-							/>
-						</FormControl>
-
-						<FormControl label="Your password">
-							<Input
-								value={userRegisterPassword}
-								onChange={e =>
-									setUserRegisterPassword(e.target.value)
-								}
-								onKeyUp={e => {
-									if (e.which === 13) handleUserRegister();
-								}}
-								type="password"
-								required
-							/>
-						</FormControl>
-
-						<StyledLink
-							href="#"
-							onClick={() => {
-								setRegisterModalIsOpen(false);
-								setLoginModalIsOpen(true);
-							}}
-						>
-							Already have an account? Sign in here!
-						</StyledLink>
-					</ModalBody>
-
-					<ModalFooter
-						style={{
-							color: '#d44333',
-							display: 'flex',
-							justifyContent: 'space-between',
-						}}
+					<Modal
+						unstable_ModalBackdropScroll
+						onClose={() => setIsOpen(false)}
+						isOpen={isOpen}
+						animate
+						autoFocus
+						role={ROLE.alertdialog}
 					>
-						<p>{registerResponse}</p>
-						<ModalButton
-							onClick={handleUserRegister}
-							isLoading={registerFetching}
-							disabled={registerFetching}
-						>
-							Sign up
-						</ModalButton>
-					</ModalFooter>
-				</Modal>
+						<ModalHeader>Error</ModalHeader>
 
-				<Modal
-					unstable_ModalBackdropScroll
-					onClose={() => setIsOpen(false)}
-					isOpen={isOpen}
-					animate
-					autoFocus
-					role={ROLE.alertdialog}
-				>
-					<ModalHeader>Error</ModalHeader>
+						<ModalBody>
+							The URL provived on input is not a valid URL.
+							Please, insert a valid URL and try again.
+						</ModalBody>
 
-					<ModalBody>
-						The URL provived on input is not a valid URL. Please,
-						insert a valid URL and try again.
-					</ModalBody>
+						<ModalFooter>
+							<ModalButton onClick={() => setIsOpen(false)}>
+								OK
+							</ModalButton>
+						</ModalFooter>
+					</Modal>
 
-					<ModalFooter>
-						<ModalButton onClick={() => setIsOpen(false)}>
-							OK
-						</ModalButton>
-					</ModalFooter>
-				</Modal>
+					<Modal
+						unstable_ModalBackdropScroll
+						onClose={() => setIsRegisterSuccessModalOpen(false)}
+						isOpen={isRegisterSuccessModalOpen}
+						animate
+						autoFocus
+						role={ROLE.alertdialog}
+					>
+						<ModalHeader>Success</ModalHeader>
 
-				<Modal
-					unstable_ModalBackdropScroll
-					onClose={() => setIsRegisterSuccessModalOpen(false)}
-					isOpen={isRegisterSuccessModalOpen}
-					animate
-					autoFocus
-					role={ROLE.alertdialog}
-				>
-					<ModalHeader>Success</ModalHeader>
+						<ModalBody>
+							Welcome! You've just created your account on our
+							system. E-mail: {userRegisterEmail}.
+						</ModalBody>
 
-					<ModalBody>
-						Welcome! You've just created your account on our system.
-						E-mail: {userRegisterEmail}.
-					</ModalBody>
+						<ModalFooter>
+							<ModalButton
+								onClick={() =>
+									setIsRegisterSuccessModalOpen(false)
+								}
+							>
+								OK
+							</ModalButton>
+						</ModalFooter>
+					</Modal>
+				</div>
 
-					<ModalFooter>
-						<ModalButton
-							onClick={() => setIsRegisterSuccessModalOpen(false)}
-						>
-							OK
-						</ModalButton>
-					</ModalFooter>
-				</Modal>
+				<Footer isDarkTheme={isDarkTheme} />
 			</BaseProvider>
 		</Provider>
 	);

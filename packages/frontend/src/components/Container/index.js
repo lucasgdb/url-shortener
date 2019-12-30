@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { styled } from 'baseui';
 
 const Container = styled('div', {
@@ -21,4 +21,4 @@ const Container = styled('div', {
 	},
 });
 
-export default ({ children }) => <Container>{children}</Container>;
+export default memo(({ children }) => <Container>{children}</Container>);
