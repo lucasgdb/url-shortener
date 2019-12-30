@@ -8,6 +8,7 @@ const Home = lazy(() => import('~/pages/Home'));
 const VisitURL = lazy(() => import('~/pages/VisitURL'));
 
 const darkTheme = JSON.parse(localStorage.getItem('darkTheme'));
+document.body.style.background = darkTheme ? '#393939' : '#eeeeee';
 
 ReactDOM.render(
 	<Suspense

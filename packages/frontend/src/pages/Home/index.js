@@ -61,7 +61,7 @@ export default function Home({ darkTheme }) {
 	] = useState(false);
 
 	useEffect(() => {
-		document.body.style.background = isDarkTheme ? '#292929' : '#eeeeee';
+		document.body.style.background = isDarkTheme ? '#393939' : '#eeeeee';
 	}, [isDarkTheme]);
 
 	async function handleSubmit() {
@@ -86,7 +86,9 @@ export default function Home({ darkTheme }) {
 		}
 	}
 
-	async function handleUserLogin() {
+	async function handleUserLogin(event) {
+		event.preventDefault();
+
 		try {
 			if (validate(userLoginEmail) && userLoginPassword) {
 				setLoginFetching(true);
@@ -138,7 +140,7 @@ export default function Home({ darkTheme }) {
 					color: theme.colors.negative400,
 				})}
 			>
-				<Alert size="18px" />
+				<Alert title="Error" size="18px" />
 			</div>
 		);
 	}
@@ -180,7 +182,7 @@ export default function Home({ darkTheme }) {
 								title="Short the pasted URL"
 								onClick={handleSubmit}
 								isLoading={fetching}
-								kind={KIND.secondary}
+								disabled={fetching}
 							>
 								Short URL
 							</Button>
@@ -189,6 +191,7 @@ export default function Home({ darkTheme }) {
 								<Button
 									title="Click here to sign in"
 									onClick={() => setLoginModalIsOpen(true)}
+									kind={KIND.secondary}
 								>
 									Sign in
 								</Button>
@@ -202,6 +205,7 @@ export default function Home({ darkTheme }) {
 										);
 										setIsDarkTheme(!isDarkTheme);
 									}}
+									kind={KIND.secondary}
 								>
 									Switch Theme
 								</Button>
@@ -240,7 +244,16 @@ export default function Home({ darkTheme }) {
 							>
 								<StatefulPopover
 									placement={PLACEMENT.bottom}
-									content="Successfully copied! 👋"
+									content={
+										<Paragraph3 padding="scale500">
+											Successfully copied!{' '}
+											<span role="img" aria-label="Hands">
+												👋
+											</span>
+										</Paragraph3>
+									}
+									accessibilityType="tooltip"
+									showArrow
 								>
 									<Button>Copy URL</Button>
 								</StatefulPopover>
@@ -281,71 +294,76 @@ export default function Home({ darkTheme }) {
 				>
 					<ModalHeader>Sign in</ModalHeader>
 
-					<ModalBody>
-						<FormControl
-							label="Your email"
-							error={
-								shouldShowError
-									? 'Please input a valid email address'
-									: null
-							}
-						>
-							<Input
-								value={userLoginEmail}
-								onChange={e => onChange(e.target.value)}
-								onKeyUp={e => {
-									if (e.which === 13) handleUserLogin();
-								}}
-								onBlur={() => setIsVisited(true)}
-								error={shouldShowError}
-								overrides={
-									shouldShowError ? { After: Negative } : {}
+					<form onSubmit={e => handleUserLogin(e)} method="POST">
+						<ModalBody>
+							<FormControl
+								label="Your email"
+								error={
+									shouldShowError
+										? 'Please input a valid email address'
+										: null
 								}
-								type="email"
-								required
-							/>
-						</FormControl>
+							>
+								<Input
+									value={userLoginEmail}
+									onChange={e => onChange(e.target.value)}
+									onKeyUp={e => {
+										if (e.which === 13) handleUserLogin();
+									}}
+									onBlur={() => setIsVisited(true)}
+									error={shouldShowError}
+									overrides={
+										shouldShowError
+											? { After: Negative }
+											: {}
+									}
+									type="email"
+									required
+								/>
+							</FormControl>
 
-						<FormControl label="Your password">
-							<Input
-								value={userLoginPassword}
-								onChange={e =>
-									setUserLoginPassword(e.target.value)
-								}
-								onKeyUp={e => {
-									if (e.which === 13) handleUserLogin();
+							<FormControl label="Your password">
+								<Input
+									value={userLoginPassword}
+									onChange={e =>
+										setUserLoginPassword(e.target.value)
+									}
+									onKeyUp={e => {
+										if (e.which === 13) handleUserLogin();
+									}}
+									type="password"
+									required
+								/>
+							</FormControl>
+
+							<StyledLink
+								href="#"
+								onClick={() => {
+									setLoginModalIsOpen(false);
+									setRegisterModalIsOpen(true);
 								}}
-								type="password"
-								required
-							/>
-						</FormControl>
+							>
+								Don't you have an account? Sign up here!
+							</StyledLink>
+						</ModalBody>
 
-						<StyledLink
-							href="#"
-							onClick={() => {
-								setLoginModalIsOpen(false);
-								setRegisterModalIsOpen(true);
+						<ModalFooter
+							style={{
+								color: '#d44333',
+								display: 'flex',
+								justifyContent: 'space-between',
 							}}
 						>
-							Don't you have an account? Sign up here!
-						</StyledLink>
-					</ModalBody>
-
-					<ModalFooter
-						style={{
-							color: '#d44333',
-							display: 'flex',
-							justifyContent: 'space-between',
-						}}
-					>
-						<p>{response}</p>
-						<ModalButton
-							onClick={handleUserLogin}
-							isLoading={loginFetching}
-						>
-							Sign in
-						</ModalButton>
-					</ModalFooter>
+							<p>{response}</p>
+							<ModalButton
+								type="submit"
+								isLoading={loginFetching}
+								disabled={loginFetching}
+							>
+								Sign in
+							</ModalButton>
+						</ModalFooter>
+					</form>
 				</Modal>
 
 				<Modal
@@ -421,6 +439,7 @@ export default function Home({ darkTheme }) {
 						<ModalButton
 							onClick={handleUserRegister}
 							isLoading={registerFetching}
+							disabled={registerFetching}
 						>
 							Sign up
 						</ModalButton>
