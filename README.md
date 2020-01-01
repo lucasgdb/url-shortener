@@ -9,3 +9,4 @@
 
 ![](images/url-shortener-light.png)
 ![](images/url-shortener-dark.png)
+![](images/url-shortener-logged.png)
