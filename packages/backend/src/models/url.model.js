@@ -6,12 +6,16 @@ const urlSchema = new Schema({
 	originalURL: {
 		type: String,
 		required: true,
-		unique: true,
 	},
 	shortenedURL: {
 		type: String,
 		required: true,
 		unique: true,
+	},
+	userID: {
+		type: String,
+		required: false,
+		select: false,
 	},
 	createdAt: {
 		type: Date,

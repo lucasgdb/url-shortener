@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 mongoose.connection.once('open', () => {
-	require('./model');
+	require('./models');
 
 	app.use('/api', require('./routes'));
 
