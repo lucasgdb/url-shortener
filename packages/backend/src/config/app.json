@@ -1,6 +1,6 @@
 {
     "mongo": {
-        "host": "mongo",
+        "host": "localhost",
         "port": "27017"
     }
 }
