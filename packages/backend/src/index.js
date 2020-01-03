@@ -5,10 +5,13 @@ const cors = require('cors');
 const app = express();
 const appConfig = require('./config/app.json');
 
-mongoose.connect(`mongodb://${appConfig.mongo.host}:${appConfig.mongo.port}/url-shortener`, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
+mongoose.connect(
+	`mongodb://${appConfig.mongo.host}:${appConfig.mongo.port}/url-shortener`,
+	{
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	}
+);
 
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);

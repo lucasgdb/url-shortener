@@ -396,7 +396,8 @@ export default function Home({ darkTheme }) {
 											href={`${appConfig.baseURL}${shortenedURL}`}
 											target="_blank"
 										>
-											{appConfig.baseURL}{shortenedURL}
+											{appConfig.baseURL}
+											{shortenedURL}
 										</StyledLink>
 									</Paragraph3>
 								</HeadingLevel>
