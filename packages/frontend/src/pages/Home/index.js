@@ -77,6 +77,7 @@ export default function Home({ darkTheme }) {
 	const [isLogged, setIsLogged] = useState(false);
 	const [URLs, setURLs] = useState([]);
 	const [userID, setUserID] = useState(null);
+	const [userEmail, setUserEmail] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const getAllURLs = useCallback(async () => {
@@ -105,6 +106,7 @@ export default function Home({ darkTheme }) {
 
 					setIsLogged(true);
 					setUserID(data._id);
+					setUserEmail(data.userEmail);
 					getAllURLs();
 				} catch (err) {
 					localStorage.removeItem('TOKEN');
@@ -117,6 +119,8 @@ export default function Home({ darkTheme }) {
 
 	useEffect(() => {
 		document.body.style.background = isDarkTheme ? '#393939' : '#eeeeee';
+		document.body.style.transition = 'background 0.1s';
+
 		localStorage.setItem('darkTheme', isDarkTheme);
 	}, [isDarkTheme]);
 
@@ -164,6 +168,7 @@ export default function Home({ darkTheme }) {
 				setIsLogged(true);
 				setResponse('');
 				setUserID(data._id);
+				setUserEmail(data.userEmail);
 				getAllURLs();
 			}
 		} catch (err) {
@@ -258,6 +263,7 @@ export default function Home({ darkTheme }) {
 								}}
 							>
 								URL Shortener
+								{isLogged ? ` - Logged user: ${userEmail}` : ''}
 							</StyledNavigationItem>
 						</StyledNavigationList>
 

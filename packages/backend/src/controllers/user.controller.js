@@ -2,7 +2,7 @@ const User = require('mongoose').model('user');
 const { validate } = require('email-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const authConfig = require('../config/auth.json');
+const { secret } = require('../config/auth.json');
 
 module.exports = {
 	async login(req, res) {
@@ -18,14 +18,18 @@ module.exports = {
 
 				if (bcrypt.compareSync(userPassword, user.userPassword)) {
 					const token = jwt.sign(
-						{ _id: user._id },
-						authConfig.secret,
+						{ _id: user._id, userEmail: user.userEmail },
+						secret,
 						{ expiresIn: 86400 }
 					);
 
 					req._id = user._id;
 
-					return res.status(200).json({ _id: user._id, token });
+					return res.status(200).json({
+						_id: user._id,
+						userEmail: user.userEmail,
+						token,
+					});
 				} else {
 					return res
 						.status(400)
@@ -69,14 +73,14 @@ module.exports = {
 	async authenticate(req, res) {
 		const { token } = req.params;
 
-		jwt.verify(token, authConfig.secret, (err, decoded) => {
+		jwt.verify(token, secret, (err, decoded) => {
 			if (err) {
 				return res.status(401).json({ message: 'Invalid token' });
 			}
 
-			req._id = decoded._id;
-
-			return res.status(200).json({ _id: decoded._id });
+			return res
+				.status(200)
+				.json({ _id: decoded._id, userEmail: decoded.userEmail });
 		});
 	},
 };
