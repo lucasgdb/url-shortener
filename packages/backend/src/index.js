@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
+const appConfig = require('./config/app.json');
 
-mongoose.connect('mongodb://localhost:27017/url-shortener', {
+mongoose.connect(`mongodb://${appConfig.mongo.host}:${appConfig.mongo.port}/url-shortener`, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
