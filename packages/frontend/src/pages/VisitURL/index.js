@@ -15,10 +15,15 @@ export default function VisitURL({ isDarkTheme }) {
 
 	useEffect(() => {
 		(async () => {
-			const { data } = await api.get(`/url/${shortenedURL}`);
+			try {
+				const { data } = await api.get(`/url/${shortenedURL}`);
 
-			if (!data.error) document.location = data.originalURL;
-			else document.location = '/';
+				document.location = data.originalURL;
+				return;
+			} catch (err) {
+				document.location = '/';
+				return;
+			}
 		})();
 	}, [shortenedURL]);
 
