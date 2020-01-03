@@ -140,12 +140,7 @@ export default function Home({ darkTheme }) {
 				setOriginalURL('');
 				setFetching(false);
 
-				if (isLogged) {
-					const size = Math.ceil(data.length / 5);
-					if (size > 0 && currentPage > size) setCurrentPage(size);
-
-					getAllURLs();
-				}
+				if (isLogged) getAllURLs();
 			} else setIsOpen(true);
 		} catch (err) {
 			setIsOpen(true);
@@ -218,9 +213,6 @@ export default function Home({ darkTheme }) {
 			});
 
 			getAllURLs();
-
-			const size = Math.ceil(URLs.length / 5);
-			if (size > 0 && currentPage > size) setCurrentPage(size);
 		} catch (err) {}
 	}
 
@@ -503,7 +495,17 @@ export default function Home({ darkTheme }) {
 															}}
 														>
 															Long URL:{' '}
-															{URL.originalURL}
+															{URL.originalURL.substr(
+																0,
+																URL.originalURL
+																	.length > 80
+																	? 80
+																	: Infinity
+															)}
+															{URL.originalURL
+																.length > 80
+																? '...'
+																: ''}
 														</p>
 
 														<StyledLink
@@ -553,6 +555,8 @@ export default function Home({ darkTheme }) {
 															kind={KIND.tertiary}
 															style={{
 																padding: 0,
+																marginLeft:
+																	'10px',
 															}}
 															onClick={() =>
 																handleRemoveURL(

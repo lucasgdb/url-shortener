@@ -8,40 +8,43 @@ module.exports = {
 	async login(req, res) {
 		const { userEmail } = req.params;
 
-		if (validate(userEmail)) {
-			const user = await User.findOne({ userEmail }).select(
-				'+userPassword'
-			);
+		try {
+			if (validate(userEmail)) {
+				const user = await User.findOne({ userEmail }).select(
+					'+userPassword'
+				);
 
-			if (user) {
-				const { userPassword } = req.params;
+				if (user) {
+					const { userPassword } = req.params;
 
-				if (bcrypt.compareSync(userPassword, user.userPassword)) {
-					const token = jwt.sign(
-						{ _id: user._id, userEmail: user.userEmail },
-						secret,
-						{ expiresIn: 86400 }
-					);
+					if (bcrypt.compareSync(userPassword, user.userPassword)) {
+						const token = jwt.sign(
+							{ _id: user._id, userEmail: user.userEmail },
+							secret
+						);
 
-					req._id = user._id;
+						req._id = user._id;
 
-					return res.status(200).json({
-						_id: user._id,
-						userEmail: user.userEmail,
-						token,
-					});
+						return res.status(200).json({
+							_id: user._id,
+							userEmail: user.userEmail,
+							token,
+						});
+					} else {
+						return res
+							.status(400)
+							.json({ message: 'Invalid password.' });
+					}
 				} else {
 					return res
 						.status(400)
-						.json({ message: 'Invalid password.' });
+						.json({ message: "E-mail doesn't exist." });
 				}
 			} else {
-				return res
-					.status(400)
-					.json({ message: "E-mail doesn't exist." });
+				return res.status(400).json({ message: 'Invalid e-mail.' });
 			}
-		} else {
-			return res.status(400).json({ message: 'Invalid e-mail.' });
+		} catch (err) {
+			return res.status(500).json({ message: 'Server error.' });
 		}
 	},
 
