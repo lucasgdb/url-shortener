@@ -22,6 +22,7 @@ import { StatefulTooltip } from 'baseui/tooltip';
 import { StyledSpinnerNext } from 'baseui/spinner';
 import { DeleteAlt } from 'baseui/icon';
 import { Pagination } from 'baseui/pagination';
+import { Checkbox, STYLE_TYPE, LABEL_PLACEMENT } from 'baseui/checkbox';
 import {
 	HeaderNavigation,
 	ALIGN,
@@ -116,6 +117,7 @@ export default function Home({ darkTheme }) {
 
 	useEffect(() => {
 		document.body.style.background = isDarkTheme ? '#393939' : '#eeeeee';
+		localStorage.setItem('darkTheme', isDarkTheme);
 	}, [isDarkTheme]);
 
 	async function handleSubmit() {
@@ -262,9 +264,15 @@ export default function Home({ darkTheme }) {
 						<StyledNavigationList $align={ALIGN.center} />
 
 						<StyledNavigationList $align={ALIGN.right}>
-							<StyledNavigationItem>
+							<StyledNavigationItem
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+								}}
+							>
 								{!isLogged ? (
 									<Button
+										style={{ marginRight: '10px' }}
 										size={SIZE.compact}
 										onClick={() =>
 											setLoginModalIsOpen(true)
@@ -274,6 +282,7 @@ export default function Home({ darkTheme }) {
 									</Button>
 								) : (
 									<Button
+										style={{ marginRight: '10px' }}
 										size={SIZE.compact}
 										onClick={handleUserLogout}
 									>
@@ -281,27 +290,16 @@ export default function Home({ darkTheme }) {
 									</Button>
 								)}
 
-								<StatefulTooltip
-									accessibilityType="tooltip"
-									content={`Switch current theme to ${
-										!isDarkTheme ? 'Dark' : 'Light'
-									} Theme`}
-									placement={PLACEMENT.bottom}
+								<Checkbox
+									checked={isDarkTheme}
+									checkmarkType={STYLE_TYPE.toggle_round}
+									onChange={async e =>
+										setIsDarkTheme(e.target.checked)
+									}
+									labelPlacement={LABEL_PLACEMENT.right}
 								>
-									<Button
-										size={SIZE.compact}
-										style={{ marginLeft: '10px' }}
-										onClick={() => {
-											localStorage.setItem(
-												'darkTheme',
-												!isDarkTheme
-											);
-											setIsDarkTheme(!isDarkTheme);
-										}}
-									>
-										Switch Theme
-									</Button>
-								</StatefulTooltip>
+									Dark Theme
+								</Checkbox>
 							</StyledNavigationItem>
 						</StyledNavigationList>
 					</HeaderNavigation>
