@@ -40,6 +40,7 @@ import {
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const engine = new Client();
+const appConfig = require('~/config/app.json');
 
 export default function Home({ darkTheme }) {
 	const [originalURL, setOriginalURL] = useState('');
@@ -392,16 +393,16 @@ export default function Home({ darkTheme }) {
 									<Paragraph3>
 										Shortened URL:{' '}
 										<StyledLink
-											href={`http://127.0.0.1:3000/${shortenedURL}`}
+											href={`${appConfig.baseURL}${shortenedURL}`}
 											target="_blank"
 										>
-											http://127.0.0.1:3000/{shortenedURL}
+											{appConfig.baseURL}{shortenedURL}
 										</StyledLink>
 									</Paragraph3>
 								</HeadingLevel>
 
 								<CopyToClipboard
-									text={`http://127.0.0.1:3000/${shortenedURL}`}
+									text={`${appConfig.baseURL}${shortenedURL}`}
 								>
 									<StatefulPopover
 										placement={PLACEMENT.bottom}
@@ -501,10 +502,10 @@ export default function Home({ darkTheme }) {
 														</p>
 
 														<StyledLink
-															href={`http://127.0.0.1:3000/${URL.shortenedURL}`}
+															href={`${appConfig.baseURL}${URL.shortenedURL}`}
 															target="_blank"
 														>
-															http://127.0.0.1:3000/
+															{appConfig.baseURL}
 															{URL.shortenedURL}
 														</StyledLink>
 													</div>
@@ -517,7 +518,7 @@ export default function Home({ darkTheme }) {
 														}}
 													>
 														<CopyToClipboard
-															text={`http://127.0.0.1:3000/${URL.shortenedURL}`}
+															text={`${appConfig.baseURL}${URL.shortenedURL}`}
 														>
 															<StatefulPopover
 																placement={
