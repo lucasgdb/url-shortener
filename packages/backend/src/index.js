@@ -4,13 +4,16 @@ const cors = require('cors');
 const requireAll = require('require-dir');
 
 const app = express();
-const { mongo, port } = require('./config/app.json');
-const { host, mongoPort } = mongo;
+const { mongo, appPort } = require('./config/app.json');
+const { username, password, host, mongoPort, database } = mongo;
 
-mongoose.connect(`mongodb://${host}:${mongoPort}/url-shortener`, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
+mongoose.connect(
+	`mongodb://${username}:${password}@${host}:${mongoPort}/${database}`,
+	{
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	}
+);
 
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
@@ -22,7 +25,7 @@ app.use(cors());
 mongoose.connection.once('open', () => {
 	requireAll('./models');
 
-	app.use('/api', require('./routes'));
+	app.use('/', require('./routes'));
 
-	app.listen(port, () => console.log('node and mongo server started!'));
+	app.listen(appPort, () => console.log('node and mongo server started!'));
 });

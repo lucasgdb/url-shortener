@@ -1,7 +1,10 @@
 {
 	"mongo": {
+		"username": "root",
+		"password": "secret",
 		"host": "localhost",
-		"mongoPort": "27017"
+		"mongoPort": "27017",
+		"database": "url-shortener"
 	},
-	"port": 3001
+	"appPort": 3001
 }

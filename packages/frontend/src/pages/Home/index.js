@@ -100,7 +100,7 @@ export default function Home({ darkTheme }) {
 		(async () => {
 			const TOKEN = localStorage.getItem('TOKEN');
 
-			if (!!TOKEN) {
+			if (TOKEN) {
 				try {
 					const { data } = await API.get(`/user/${TOKEN}`);
 
@@ -186,6 +186,7 @@ export default function Home({ darkTheme }) {
 		try {
 			if (validate(userRegisterEmail) && userRegisterPassword) {
 				setRegisterFetching(true);
+
 				await API.post('/user', {
 					userEmail: userRegisterEmail,
 					userPassword: userRegisterPassword,
