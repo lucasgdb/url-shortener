@@ -8,11 +8,11 @@ const { mongo, appPort } = require('./config/app.json');
 const { username, password, host, mongoPort, database } = mongo;
 
 mongoose.connect(
-	`mongodb://${username}:${password}@${host}:${mongoPort}/${database}`,
-	{
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	}
+    `mongodb://${username}:${password}@${host}:${mongoPort}/${database}`,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    }
 );
 
 mongoose.set('useFindAndModify', false);
@@ -23,9 +23,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 mongoose.connection.once('open', () => {
-	requireAll('./models');
+    requireAll('./models');
 
-	app.use('/', require('./routes'));
+    app.use('/', require('./routes'));
 
-	app.listen(appPort, () => console.log('node and mongo server started!'));
+    app.listen(appPort, () => console.log('node and mongo server started!'));
 });
