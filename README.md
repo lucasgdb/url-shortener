@@ -2,7 +2,7 @@
 
 ## Author
 
-| [<img src="https://avatars3.githubusercontent.com/u/13838273?v=3&s=115"><br><sub>@lucasnaja</sub>](https://github.com/lucasnaja) |
+| [<img src="https://avatars3.githubusercontent.com/u/13838273?v=3&s=115"><br><sub>@lucasgdb</sub>](https://github.com/lucasgdb) |
 | :------------------------------------------------------------------------------------------------------------------------------: |
 
 
@@ -12,7 +12,7 @@
 -   command: `docker container run -d --name mongo -p 27017:27017 -p 28017:28017 -e MONGODB_USER="root" -e MONGODB_PASS="secret" -e MONGODB_DATABASE="url-shortener" tutum/mongodb:latest`
 -   make sure you have nodejs and npm installed.
 -   make sure you'll open an issue for any problem.
--   clone this repo (git clone https://github.com/lucasnaja/url-shortener.git)
+-   clone this repo (git clone https://github.com/lucasgdb/url-shortener.git)
 -   enter into cloned directory.
 -   type `yarn` or `npm install`
 -   make the changes.
