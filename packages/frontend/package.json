@@ -40,7 +40,7 @@
 		"react-dom": "^16.13.0",
 		"react-helmet": "^5.2.1",
 		"react-router-dom": "^5.1.2",
-		"react-scripts": "3.3.0",
+		"react-scripts": "3.4.0",
 		"styletron-engine-atomic": "^1.4.4",
 		"styletron-react": "^5.2.6",
 		"valid-url": "^1.0.9"
